@@ -18,6 +18,22 @@ type Edge struct {
 	UpdatedAt time.Time
 }
 
+type Iterator interface {
+	Next() bool
+	Error() error
+	Close() error
+}
+
+type LinkIterator interface {
+	Iterator
+	Link() *Link
+}
+
+type EdgeIterator interface {
+	Iterator
+	Edge() *Edge
+}
+
 type Graph interface {
 	UpsertLink(link *Link) error
 	FindLink(id uuid.UUID) (*Link, error)
