@@ -69,7 +69,7 @@ func (s *InMemoryGraph) FindLink(id uuid.UUID) (*graph.Link, error) {
 	defer s.mu.RUnlock()
 
 	link := s.links[id]
-	if s.links[id] != nil {
+	if s.links[id] == nil {
 		return nil, xerrors.Errorf("link does not exist: %w", graph.ErrNotFound)
 	}
 	lCopy := new(graph.Link)
@@ -84,7 +84,7 @@ func (s *InMemoryGraph) Links(fromID, toID uuid.UUID, retrievedBefore time.Time)
 	from, to := fromID.String(), toID.String()
 
 	s.mu.RLock()
-	var list []graph.Link
+	var list []*graph.Link
 	for linkID, link := range s.links {
 		if id := linkID.String(); id >= from && id < to && link.RetrievedAt.Before(retrievedBefore) {
 			list = append(list, link)
@@ -134,7 +134,7 @@ func (s *InMemoryGraph) UpsertEdge(edge *graph.Edge) error {
 	return nil
 }
 
-func (s *InMemoryGraph) Edges(fromID, toID uuid.UUID, updatedBefore time.Time) (*graph.EdgeIterator, error) {
+func (s *InMemoryGraph) Edges(fromID, toID uuid.UUID, updatedBefore time.Time) (graph.EdgeIterator, error) {
 	from, to := fromID.String(), toID.String()
 	s.mu.RLock()
 	var list []*graph.Edge
@@ -144,8 +144,7 @@ func (s *InMemoryGraph) Edges(fromID, toID uuid.UUID, updatedBefore time.Time) (
 		}
 
 		for _, edgeID := range s.linkEdgeMap[linkID] {
-			if edge := s.edges[edgeID]; edge != nil {
-				edge.UpdatedAt.Before(updatedBefore)
+			if edge := s.edges[edgeID]; edge != nil && edge.UpdatedAt.Before(updatedBefore) {
 				list = append(list, edge)
 			}
 		}
