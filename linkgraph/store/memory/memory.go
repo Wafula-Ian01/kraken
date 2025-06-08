@@ -34,12 +34,12 @@ func NewInMemoryGraph() *InMemoryGraph {
 	}
 }
 
-// Upsertlink insert new link or update an existing one in the link graph
+// Upsertlink insert a new link or update an existing one in the link graph
 func (s *InMemoryGraph) Upsertlink(link *graph.Link) error {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 
-	//check if link with same URL exists if not assign ID and timestamp and save otherwise update timestamp
+	//check if a link with the same URL exists if not assign ID and timestamp and save otherwise update timestamp
 	if existing := s.linkURLIndex[link.URL]; existing != nil {
 		link.ID = existing.ID
 		origTs := existing.RetrievedAt
@@ -63,7 +63,7 @@ func (s *InMemoryGraph) Upsertlink(link *graph.Link) error {
 	return nil
 }
 
-// FindLink looks up a link by it's ID
+// FindLink looks up a link by its ID
 func (s *InMemoryGraph) FindLink(id uuid.UUID) (*graph.Link, error) {
 	s.mu.RLock()
 	defer s.mu.RUnlock()
@@ -79,7 +79,7 @@ func (s *InMemoryGraph) FindLink(id uuid.UUID) (*graph.Link, error) {
 }
 
 // Links returns an iterator for the set of links whose IDs belong to the
-// [fromID, toID) range and were retrieved before the provided timestamp.
+// [fromID, toID] range and were retrieved before the provided timestamp.
 func (s *InMemoryGraph) Links(fromID, toID uuid.UUID, retrievedBefore time.Time) (graph.LinkIterator, error) {
 	from, to := fromID.String(), toID.String()
 

@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="SqlDialectMappings">
+    <file url="file://$PROJECT_DIR$/linkgraph/store/cdb/cdb.go" dialect="Cockroach" />
     <file url="file://$PROJECT_DIR$/linkgraph/store/cdb/migrations/01_create_links_table.down.sql" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/linkgraph/store/cdb/migrations/01_create_links_table.up.sql" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/linkgraph/store/cdb/migrations/02_create_edges_table.down.sql" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/linkgraph/store/cdb/migrations/02_create_edges_table.up.sql" dialect="GenericSQL" />
+  </component>
+  <component name="SqlResolveMappings">
+    <file url="file://$PROJECT_DIR$/linkgraph/store/cdb/cdb.go" scope="{&quot;node&quot;:{  &quot;@negative&quot;:&quot;1&quot;,  &quot;group&quot;:{   &quot;@kind&quot;:&quot;root&quot;,   &quot;node&quot;:{    &quot;@negative&quot;:&quot;1&quot;   }  } }}" />
   </component>
 </project>
